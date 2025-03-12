@@ -1,2 +1,2 @@
 rootProject.name = "test_recorder"
-include("api", "core", "common")
+include("api", "core", "kke", "kke_test")

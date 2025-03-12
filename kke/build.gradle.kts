@@ -21,17 +21,15 @@ dependencies {
     implementation(project(":api"))
     implementation(project(":core"))
 
-    implementation(libs.kodein.di)
-    implementation(libs.ktor.client.core)
-    implementation(libs.ktor.client.cio)
-    implementation(libs.ktor.client.content.negotiation)
-    implementation(libs.ktor.client.mock)
+    // Bundles
+    implementation(libs.bundles.ktor)
+    implementation(libs.bundles.exposed)
+
+    // Libraries
     implementation(libs.ktor.serialization.kotlinx.json)
 
-    testImplementation(libs.junit.jupiter)
-    testImplementation(libs.kotest.runner.junit5)
-    testImplementation(libs.kotest.assertions.core)
-
+    // Testing
+    testImplementation(libs.bundles.testing)
 }
 
 tasks.test {

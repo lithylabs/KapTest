@@ -4,7 +4,6 @@ import kotlinx.serialization.*
 import kotlinx.serialization.descriptors.*
 import kotlinx.serialization.encoding.*
 import kotlinx.serialization.json.*
-import org.joda.time.*
 import org.rela.test_recorder.*
 import java.io.*
 
@@ -57,7 +56,7 @@ open class TestRecorderConfig(
      *
      * @see recording
      */
-    open fun startRecorder(): TestRecorder {
+    open fun startTest(): TestRecorder {
         // Create a recorder for this test
         val testClass = testObj::class
         val testName = findTestName()
@@ -82,12 +81,12 @@ open class TestRecorderConfig(
         return stackElement.methodName
 
         // This implementation was used in junit 4
-        val testElement = stackIt.next().className
-        val index1 = testElement.indexOf('$') + 1
-        val possible = testElement.lastIndexOf('$')
-        val index2 = if (possible != -1) possible else testElement.length
-        val testName = testElement.substring(index1, index2).replace(' ', '_')
-        return testName
+        // val testElement = stackIt.next().className
+        // val index1 = testElement.indexOf('$') + 1
+        // val possible = testElement.lastIndexOf('$')
+        // val index2 = if (possible != -1) possible else testElement.length
+        // val testName = testElement.substring(index1, index2).replace(' ', '_')
+        // return testName
     }
 
     /**

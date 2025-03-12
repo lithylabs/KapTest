@@ -4,7 +4,7 @@ import java.time.format.*
 
 group = "org.reladev"
 version = "0.1.0"
-val artifact = "test.recorder.api"
+val artifact = "test.recorder.core"
 
 plugins {
     `maven-publish`
@@ -19,14 +19,19 @@ repositories {
 
 dependencies {
     implementation(project(":api"))
+    implementation(project(":core"))
+    implementation(project(":kke"))
 
-    implementation(libs.kotlinx.serialization.core.jvm)
-    implementation(libs.kotlinx.serialization.json)
+    // Bundles
+    implementation(libs.bundles.ktor)
+    implementation(libs.bundles.exposed)
 
-   	testImplementation(libs.junit.jupiter)
-    testImplementation(libs.kotest.runner.junit5)
-    testImplementation(libs.kotest.assertions.core)
+    // Libraries
+    implementation(libs.ktor.serialization.kotlinx.json)
 
+    // Testing
+    testImplementation(libs.bundles.testing)
+    testImplementation(libs.tc.postgresql)
 }
 
 tasks.test {

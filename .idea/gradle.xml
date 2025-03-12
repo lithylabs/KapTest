@@ -10,8 +10,9 @@
           <set>
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/api" />
-            <option value="$PROJECT_DIR$/common" />
             <option value="$PROJECT_DIR$/core" />
+            <option value="$PROJECT_DIR$/kke" />
+            <option value="$PROJECT_DIR$/kke_test" />
           </set>
         </option>
       </GradleProjectSettings>
