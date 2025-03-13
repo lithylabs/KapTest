@@ -4,25 +4,42 @@ import org.rela.test_recorder.*
 import java.io.*
 import java.time.*
 
-class TestRecorderImpl(
-    val rootDir: String,
-    val testClass: String,
-    val testMethod: String,
-    override val record: Boolean,
-    val adjustableDateTime: AdjustableDateTime
-): TestRecorder {
+class TestRecorder (
+    config: TestRecorderConfig,
+    override val record: Boolean
+): Recorder {
     val eventCounts = mutableMapOf<String, Int>()
-    val recordingPath = "$rootDir/$testClass/$testMethod.json"
+    val recordingPath: String
     val recording: Recording
+    val adjustableDateTime = config.adjustableDateTime
+
+    constructor(record: Boolean = false): this(TestRecorderConfig(), record)
 
     init {
+        if (record) {
+            val disableBuildRecording = System.getenv("DISABLE_BUILD_RECORDING").toBoolean()
+            if (disableBuildRecording) {
+                throw NewRecordingGradleException("AllowTestRecording environment variable doesn't allow recording. " +
+                        "Check to see if a record was left true.")
+            }
+        }
+
+        val (className, methodName) = findClassMethodNames(config.ignoreTestClasses)
+        recordingPath = if (!config.overridePath.isNullOrBlank()) {
+            config.overridePath!!
+        } else {
+            val classPath = className.replace(".", "/")
+            "${config.rootDir}/$classPath/$methodName.json"
+        }
+
+
         recording = if (this.record) {
             writeRecording(
                 recordingPath,
                 Recording(
                     ZonedDateTime.now().toString(),
-                    testClass,
-                    testMethod,
+                    className,
+                    methodName,
                     adjustableDateTime.currentTestMillis(),
                     eventMap = mutableMapOf()
                 )
@@ -79,6 +96,20 @@ class TestRecorderImpl(
         adjustableDateTime.setCurrentTestMillis(recording.startCurrentMillis)
 
         return recording
+    }
+
+    fun findClassMethodNames(ignoreClasses: List<String>): Pair<String, String> {
+        val stackTrace = Exception().stackTrace
+        val stackIt = stackTrace.iterator()
+        var stackElement = stackIt.next()
+        while (
+            stackElement.className == "org.rela.test_recorder.core.TestRecorder" ||
+            ignoreClasses.contains(stackElement.className)
+        ) {
+            stackElement = stackIt.next()
+        }
+        return Pair(stackElement.className, stackElement.methodName)
+
     }
 }
 

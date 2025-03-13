@@ -5,7 +5,7 @@ import io.ktor.client.*
 import io.ktor.client.engine.cio.*
 import io.ktor.client.request.*
 import org.junit.jupiter.api.Test
-import org.rela.test_recorder.TestRecorder
+import org.rela.test_recorder.Recorder
 
 
 class KtorRecordableJsonClientTest {
@@ -22,7 +22,7 @@ class KtorRecordableJsonClientTest {
     }
 }
 
-class MockTestRecorder: TestRecorder {
+class MockTestRecorder: Recorder {
     override var record: Boolean = true
     var json: String? = null
     var recordCalled = false

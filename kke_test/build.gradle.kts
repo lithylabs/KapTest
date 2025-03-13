@@ -28,6 +28,7 @@ dependencies {
 
     // Libraries
     implementation(libs.ktor.serialization.kotlinx.json)
+    implementation(libs.kodein.di)
 
     // Testing
     testImplementation(libs.bundles.testing)

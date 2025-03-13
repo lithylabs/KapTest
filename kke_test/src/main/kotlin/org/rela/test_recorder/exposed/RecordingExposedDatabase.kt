@@ -1,14 +1,13 @@
 package org.rela.test_recorder.exposed
 
 import kotlinx.coroutines.*
-import org.jetbrains.exposed.sql.Database
 import org.jetbrains.exposed.sql.transactions.TransactionInterface
 import org.rela.test_recorder.*
 
 
 class RecordingExposedDatabase(
     val exposedDatabase: ExposedDatabase?,
-    val recorder: TestRecorder,
+    val recorder: Recorder,
 ): ExposedDatabase {
 
     /**

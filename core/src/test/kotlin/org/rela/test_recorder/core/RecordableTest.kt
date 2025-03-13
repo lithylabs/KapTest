@@ -6,7 +6,7 @@ import io.kotest.matchers.nulls.shouldNotBeNull
 import io.kotest.matchers.shouldBe
 import kotlinx.serialization.*
 import org.junit.jupiter.api.*
-import org.rela.test_recorder.TestRecorder
+import org.rela.test_recorder.Recorder
 
 class RecordableTest {
     @Test
@@ -61,7 +61,7 @@ class RecordableTest {
 }
 
 class RecordableExample (
-    override val recorder: TestRecorder? = null
+    override val recorder: Recorder? = null
 ): Recordable {
     fun someMethod() = recordable {
         ExampleData("John", 25)
@@ -83,7 +83,7 @@ class ExampleData(
     val age: Int
 )
 
-class MockTestRecorder: TestRecorder {
+class MockTestRecorder: Recorder {
     override var record: Boolean = true
     var json: String? = null
     var recordCalled = false

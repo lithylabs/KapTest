@@ -6,11 +6,10 @@ import io.ktor.client.request.*
 import io.ktor.http.*
 import io.ktor.util.*
 import io.ktor.utils.io.*
-import org.rela.test_recorder.TestRecorder
+import org.rela.test_recorder.Recorder
 import org.rela.test_recorder.core.JsonMapper
 import org.rela.test_recorder.core.RecordingMissingCallException
 import org.rela.test_recorder.core.sha256
-import java.util.*
 
 /**
  * Creates a Ktor client that can handle recording and playback of network requests that only handle
@@ -26,7 +25,7 @@ object KtorRecordableJsonClient {
     @OptIn(InternalAPI::class)
     operator fun invoke(
         client: HttpClient,
-        recorder: TestRecorder,
+        recorder: Recorder,
         keyIncludedHeaders: Boolean = false
     ) = HttpClient(
         MockEngine { request ->
@@ -48,7 +47,7 @@ object KtorRecordableJsonClient {
      * @see KtorJsonClientEvent
      */
     @OptIn(InternalAPI::class)
-    suspend fun handleRequestRecord(client: HttpClient, recorder: TestRecorder, request: HttpRequestData): HttpResponseData {
+    suspend fun handleRequestRecord(client: HttpClient, recorder: Recorder, request: HttpRequestData): HttpResponseData {
         val resp = client.engine.execute(request)
 
         val event = KtorJsonClientEvent(
@@ -71,7 +70,7 @@ object KtorRecordableJsonClient {
     /**
      * Fetches the event from the recorder and returns it as a response. No request is made over the network.
      */
-    fun MockRequestHandleScope.handlePlayback(recorder: TestRecorder, request: HttpRequestData): HttpResponseData {
+    fun MockRequestHandleScope.handlePlayback(recorder: Recorder, request: HttpRequestData): HttpResponseData {
         val eventId = getKtorClientEventId(request)
         val eventJson = recorder.fetchPlaybackJson(eventId)
             ?: throw RecordingMissingCallException("Playback null: ${request.method} ${request.url}")

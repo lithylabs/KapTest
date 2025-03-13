@@ -1,6 +1,5 @@
 package org.rela.test_recorder.exposed
 
-import io.kotest.common.*
 import io.kotest.matchers.longs.*
 import org.jetbrains.exposed.sql.*
 import org.junit.jupiter.api.*
@@ -61,12 +60,5 @@ class RecordingExposedDatabaseTest {
     }
 
 
-    class SchemaRepository(
-        val exposedDatabase: ExposedDatabase,
-        override val recorder: TestRecorder
-    ): Recordable {
-        fun listDatabases() = recordable {
-            SchemaUtils.listDatabases()
-        }
-    }
+
 }

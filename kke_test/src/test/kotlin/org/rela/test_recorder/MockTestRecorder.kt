@@ -1,6 +1,6 @@
 package org.rela.test_recorder
 
-class MockTestRecorder: TestRecorder {
+class MockTestRecorder: Recorder {
     override var record: Boolean = true
     var json: String? = null
     var recordCalled = false

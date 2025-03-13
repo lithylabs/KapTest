@@ -4,7 +4,7 @@ import org.rela.test_recorder.*
 import org.testcontainers.containers.*
 
 object TcExposedDatabase {
-    fun start(recorder: TestRecorder? = null): ExposedDatabase {
+    fun start(recorder: Recorder? = null): ExposedDatabase {
 
         return if (recorder == null || recorder.record) {
             val container = PostgreSQLContainer("postgres:16-alpine")

@@ -1,8 +1,7 @@
 package org.rela.test_recorder.core
 
 import kotlinx.serialization.*
-import org.rela.test_recorder.TestRecorder
-import kotlin.reflect.typeOf
+import org.rela.test_recorder.Recorder
 
 /**
  * An interface with extension functions to allow object to participate in recording and playback.
@@ -32,7 +31,7 @@ import kotlin.reflect.typeOf
  *
  */
 interface Recordable {
-    val recorder: TestRecorder?
+    val recorder: Recorder?
 
     fun <T : Any> recordable(serializer: KSerializer<T>, block: ()-> T): T {
         return recordableNullable(serializer, block)!!

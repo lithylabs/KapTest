@@ -24,9 +24,11 @@ dependencies {
     // Bundles
     implementation(libs.bundles.ktor)
     implementation(libs.bundles.exposed)
+    implementation(libs.kodein.di)
 
     // Libraries
     implementation(libs.ktor.serialization.kotlinx.json)
+    implementation(libs.tc.postgresql)
 
     // Testing
     testImplementation(libs.bundles.testing)

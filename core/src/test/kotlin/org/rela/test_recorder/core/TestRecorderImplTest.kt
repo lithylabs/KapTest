@@ -13,14 +13,12 @@ class TestRecorderImplTest {
 
     @Test
     fun `simple record playback`() {
-        val fileName = "Simple"
-
         val json = JsonMapper.json.encodeToString(TestData("Simple"))
 
-        val testRecorderRecord = testRecorder(fileName, true)
+        val testRecorderRecord = TestRecorder(true)
         testRecorderRecord.recordEvent("callName", json)
 
-        val testRecorderPlayback = testRecorder(fileName, false)
+        val testRecorderPlayback = TestRecorder(false)
         val playback = testRecorderPlayback.fetchPlaybackJson("callName")
         playback.shouldNotBeNull()
         val playbackData = JsonMapper.json.decodeFromString<TestData>(playback)
@@ -34,11 +32,11 @@ class TestRecorderImplTest {
         val json = JsonMapper.json.encodeToString(TestData("Simple"))
         val json2 = JsonMapper.json.encodeToString(TestData("Multi"))
 
-        val testRecorderRecord = testRecorder(fileName, true)
+        val testRecorderRecord = TestRecorder(true)
         testRecorderRecord.recordEvent("callName", json)
         testRecorderRecord.recordEvent("callName", json2)
 
-        val testRecorderPlayback = testRecorder(fileName, false)
+        val testRecorderPlayback = TestRecorder(false)
         val playback = testRecorderPlayback.fetchPlaybackJson("callName")
         playback.shouldNotBeNull()
         val playbackData = JsonMapper.json.decodeFromString<TestData>(playback)
@@ -55,7 +53,7 @@ class TestRecorderImplTest {
         val fileName = "MissingPlayback"
 
         shouldThrow<RecordingNotFoundException> {
-            testRecorder(fileName, false)
+            TestRecorder(false)
         }
     }
 
@@ -64,10 +62,10 @@ class TestRecorderImplTest {
         val fileName = "MissingCall"
 
         // Create empty recording
-        testRecorder(fileName, true)
+        TestRecorder(true)
 
         // Playback missing call
-        val testRecorderPlayback = testRecorder(fileName, false)
+        val testRecorderPlayback = TestRecorder(false)
         shouldThrow<RecordingMissingCallException> {
             testRecorderPlayback.fetchPlaybackJson("callName")
         }
@@ -75,11 +73,13 @@ class TestRecorderImplTest {
 
     @Test
     fun `time record and playback`() {
-        val fileName = "Time"
+        val config = TestRecorderConfig().apply {
+            adjustableDateTime = TestDateTimeCreator
+        }
 
         val json = JsonMapper.json.encodeToString(TestData("Time"))
 
-        val testTime = Instant.parse("2025-01-01T00:00:00.00Z")
+        val testTime = Instant.parse("1900-01-01T00:00:00.00Z")
         TestDateTimeCreator.setCurrentTestMillis(testTime.toEpochMilli())
 
         // Test time set correctly
@@ -87,7 +87,7 @@ class TestRecorderImplTest {
         DateTimeCreator.currentMillis().shouldBeWithinPercentageOf(testTime.toEpochMilli(), 0.01)
 
         // Test Time should be set before TestRecorder is instantiated
-        val testRecorderRecord = testRecorder(fileName, true)
+        val testRecorderRecord = TestRecorder(config,true)
         testRecorderRecord.recordEvent("callName", json)
 
         // Reset to actual time
@@ -95,22 +95,11 @@ class TestRecorderImplTest {
         DateTimeCreator.currentMillis().shouldBeWithinPercentageOf(System.currentTimeMillis(), 0.01)
 
         // Test that playback of the Recorder adjusts the time.
-        val testRecorderPlayback = testRecorder(fileName, false)
+        val testRecorderPlayback = TestRecorder(config, false)
         TestDateTimeCreator.currentTestMillis().shouldBeWithinPercentageOf(testTime.toEpochMilli(), 0.01)
         DateTimeCreator.currentMillis().shouldBeWithinPercentageOf(testTime.toEpochMilli(), 0.01)
     }
 
-
-    fun testRecorder(fileName: String, record: Boolean): TestRecorderImpl {
-        val root = "src/test/resources/recordings"
-        return TestRecorderImpl(
-            root,
-            "org.rela.test_recorder.core.TestRecorderImplTest",
-            fileName,
-            record,
-            TestDateTimeCreator
-        )
-    }
 
     @Serializable
     class TestData(val test: String)
