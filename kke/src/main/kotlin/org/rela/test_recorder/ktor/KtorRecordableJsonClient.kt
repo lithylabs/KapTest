@@ -6,6 +6,8 @@ import io.ktor.client.request.*
 import io.ktor.http.*
 import io.ktor.util.*
 import io.ktor.utils.io.*
+import io.ktor.utils.io.core.*
+import kotlinx.serialization.json.*
 import org.rela.test_recorder.Recorder
 import org.rela.test_recorder.core.JsonMapper
 import org.rela.test_recorder.core.RecordingMissingCallException
@@ -49,6 +51,22 @@ object KtorRecordableJsonClient {
     @OptIn(InternalAPI::class)
     suspend fun handleRequestRecord(client: HttpClient, recorder: Recorder, request: HttpRequestData): HttpResponseData {
         val resp = client.engine.execute(request)
+        val body = resp.body
+
+        var bodyText = ""
+        when (body) {
+            is ByteChannel -> {
+                bodyText = body.readRemaining().readText()
+            }
+            else -> {
+                throw Exception("Unknown response type: ${resp::class}")
+            }
+        }
+        val json = if (bodyText.isNotBlank()) {
+            JsonMapper.parse(JsonElement.serializer(), bodyText)
+        } else {
+            null
+        }
 
         val event = KtorJsonClientEvent(
             request.method.value,
@@ -56,7 +74,7 @@ object KtorRecordableJsonClient {
             request.body.toString(),
             resp.statusCode.value,
             resp.headers.toMap(),
-            resp.body.toString()
+            json
         )
 
         val eventJson = JsonMapper.jsonPretty.encodeToString(KtorJsonClientEvent.serializer(), event)
@@ -75,9 +93,14 @@ object KtorRecordableJsonClient {
         val eventJson = recorder.fetchPlaybackJson(eventId)
             ?: throw RecordingMissingCallException("Playback null: ${request.method} ${request.url}")
         val event = JsonMapper.json.decodeFromString<KtorJsonClientEvent>(eventJson)
+        val body = if (event.respJson != null) {
+            JsonMapper.json.encodeToString(JsonElement.serializer(), event.respJson)
+        } else {
+            ""
+        }
 
         return respond(
-            content = ByteReadChannel(event.respJson),
+            content = body,
             status = HttpStatusCode.fromValue(event.respStatus),
             headers = headersOf(*event.respHeaders.map { it.key to it.value }.toTypedArray())
         )
