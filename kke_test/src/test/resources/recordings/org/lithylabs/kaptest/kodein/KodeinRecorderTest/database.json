@@ -1,0 +1,17 @@
+{
+    "createDateTime": "2025-09-18T15:34:09.367900-07:00[America/Los_Angeles]",
+    "testClass": "org.lithylabs.kaptest.kodein.KodeinRecorderTest",
+    "testMethod": "database",
+    "startCurrentMillis": 1758234849367,
+    "eventMap": {
+        "org.lithylabs.kaptest.exposed.SchemaRepository.findCallName()_0": {
+            "id": "org.lithylabs.kaptest.exposed.SchemaRepository.findCallName()_0",
+            "json": [
+                "postgres",
+                "test",
+                "template1",
+                "template0"
+            ]
+        }
+    }
+}

@@ -1,0 +1,45 @@
+{
+    "createDateTime": "2025-09-18T15:58:47.933283-07:00[America/Los_Angeles]",
+    "testClass": "org.lithylabs.kaptest.kodein.KodeinRecorderTest",
+    "testMethod": "httpclient",
+    "startCurrentMillis": 1758236327934,
+    "eventMap": {
+        "F3A2E1D299124CFF2B0A93A8817C67E2E45C946141029E3CE74DAC779F2B460F_0": {
+            "id": "F3A2E1D299124CFF2B0A93A8817C67E2E45C946141029E3CE74DAC779F2B460F_0",
+            "json": {
+                "requestMethod": "GET",
+                "requestUrl": "https://tools.aimylogic.com/api/now",
+                "reqJson": "EmptyContent",
+                "respStatus": 200,
+                "respHeaders": {
+                    "Content-Type": [
+                        "application/json"
+                    ],
+                    "Connection": [
+                        "keep-alive"
+                    ],
+                    "Date": [
+                        "Thu, 18 Sep 2025 22:58:49 GMT"
+                    ],
+                    "Server": [
+                        "nginx"
+                    ],
+                    "Transfer-Encoding": [
+                        "chunked"
+                    ]
+                },
+                "respJson": {
+                    "timezone": "UTC",
+                    "formatted": "18.09.2025 22:58",
+                    "timestamp": 1758236329084,
+                    "weekDay": 4,
+                    "day": 18,
+                    "month": 9,
+                    "year": 2025,
+                    "hour": 22,
+                    "minute": 58
+                }
+            }
+        }
+    }
+}

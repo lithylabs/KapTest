@@ -1,0 +1,15 @@
+{
+    "createDateTime": "2025-09-18T13:32:52.358590-07:00[America/Los_Angeles]",
+    "testClass": "org.lithylabs.kaptest.core.RecordableExampleTest",
+    "testMethod": "using function",
+    "startCurrentMillis": 1758227572359,
+    "eventMap": {
+        "org.lithylabs.kaptest.core.RecordableExample.findCallName()_0": {
+            "id": "org.lithylabs.kaptest.core.RecordableExample.findCallName()_0",
+            "json": {
+                "name": "John",
+                "age": 25
+            }
+        }
+    }
+}

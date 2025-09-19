@@ -1,0 +1,7 @@
+{
+    "createDateTime": "2025-09-18T13:29:52.393163-07:00[America/Los_Angeles]",
+    "testClass": "org.lithylabs.kaptest.core.TestRecorder",
+    "testMethod": "findClassMethodNames",
+    "startCurrentMillis": 1758227392393,
+    "eventMap": {}
+}
