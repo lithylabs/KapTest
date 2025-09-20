@@ -1,0 +1,17 @@
+{
+    "createDateTime": "2025-09-19T16:06:54.664659-07:00[America/Los_Angeles]",
+    "testClass": "org.lithylabs.kaptest.exposed.ExposedDatabaseTest",
+    "testMethod": "postgres database test container",
+    "startCurrentMillis": 1758323214665,
+    "eventMap": {
+        "org.lithylabs.kaptest.exposed.SchemaRepository.findCallName()_0": {
+            "id": "org.lithylabs.kaptest.exposed.SchemaRepository.findCallName()_0",
+            "json": [
+                "postgres",
+                "test",
+                "template1",
+                "template0"
+            ]
+        }
+    }
+}

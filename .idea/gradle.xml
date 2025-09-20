@@ -9,10 +9,10 @@
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$" />
-            <option value="$PROJECT_DIR$/api" />
-            <option value="$PROJECT_DIR$/core" />
-            <option value="$PROJECT_DIR$/kke" />
-            <option value="$PROJECT_DIR$/kke_test" />
+            <option value="$PROJECT_DIR$/kaptest-api" />
+            <option value="$PROJECT_DIR$/kaptest-core" />
+            <option value="$PROJECT_DIR$/kaptest-exposed" />
+            <option value="$PROJECT_DIR$/kaptest-ktor" />
           </set>
         </option>
       </GradleProjectSettings>

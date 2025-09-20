@@ -2,9 +2,9 @@ import org.jetbrains.kotlin.gradle.plugin.KotlinSourceSetTree.Companion.test
 import java.time.*
 import java.time.format.*
 
-group = "org.reladev"
+group = "org.lithylabs.kaptest"
 version = "0.1.0"
-val artifact = "test.recorder.core"
+val artifact = "kaptest-exposed"
 
 plugins {
     `maven-publish`
@@ -20,19 +20,16 @@ repositories {
 dependencies {
     implementation(project(":kaptest-api"))
     implementation(project(":kaptest-core"))
-    implementation(project(":kke"))
 
     // Bundles
-    implementation(libs.bundles.ktor)
     implementation(libs.bundles.exposed)
 
     // Libraries
-    implementation(libs.ktor.serialization.kotlinx.json)
-    implementation(libs.kodein.di)
+    implementation(libs.tc.postgresql)
 
     // Testing
     testImplementation(libs.bundles.testing)
-    testImplementation(libs.tc.postgresql)
+    testImplementation(libs.h2)
 }
 
 tasks.test {

@@ -20,19 +20,18 @@ repositories {
 dependencies {
     implementation(project(":kaptest-api"))
     implementation(project(":kaptest-core"))
-    implementation(project(":kke"))
 
     // Bundles
     implementation(libs.bundles.ktor)
     implementation(libs.bundles.exposed)
+    implementation(libs.kodein.di)
 
     // Libraries
     implementation(libs.ktor.serialization.kotlinx.json)
-    implementation(libs.kodein.di)
+    implementation(libs.tc.postgresql)
 
     // Testing
     testImplementation(libs.bundles.testing)
-    testImplementation(libs.tc.postgresql)
 }
 
 tasks.test {

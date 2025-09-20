@@ -1,0 +1,14 @@
+{
+    "createDateTime": "2025-09-19T16:11:50.791174-07:00[America/Los_Angeles]",
+    "testClass": "org.lithylabs.kaptest.core.TestRecorderImplTest",
+    "testMethod": "simple record playback",
+    "startCurrentMillis": 1758323510791,
+    "eventMap": {
+        "callName_0": {
+            "id": "callName_0",
+            "json": {
+                "test": "Simple"
+            }
+        }
+    }
+}

@@ -1,2 +1,2 @@
-rootProject.name = "test_recorder"
-include("api", "core", "kke", "kke_test")
+rootProject.name = "kaptest"
+include("kaptest-api", "kaptest-core", "kaptest-ktor", "kaptest-exposed")
