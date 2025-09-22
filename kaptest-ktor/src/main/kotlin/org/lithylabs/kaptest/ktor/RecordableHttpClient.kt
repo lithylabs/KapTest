@@ -1,16 +1,15 @@
 package org.lithylabs.kaptest.ktor
 
 import io.ktor.client.*
+import io.ktor.client.engine.*
 import io.ktor.client.engine.mock.*
 import io.ktor.client.request.*
 import io.ktor.http.*
 import io.ktor.util.*
 import io.ktor.utils.io.*
 import kotlinx.serialization.json.*
-import org.lithylabs.kaptest.Recorder
-import org.lithylabs.kaptest.core.JsonMapper
-import org.lithylabs.kaptest.core.RecordingMissingCallException
-import org.lithylabs.kaptest.core.sha256
+import org.lithylabs.kaptest.*
+import org.lithylabs.kaptest.core.*
 
 /**
  * Creates a Ktor client that can handle recording and playback of network requests that only handle
@@ -22,25 +21,43 @@ import org.lithylabs.kaptest.core.sha256
  *
  * For an example of how to use in dependency injection, see the todo.
  */
-object KtorRecordableJsonClient {
-    @OptIn(InternalAPI::class)
+object RecordableHttpClient {
+
     operator fun invoke(
-        client: HttpClient,
-        recorder: Recorder,
-        keyIncludedHeaders: Boolean = false
-    ) = HttpClient(
-        MockEngine { request ->
+        engine: HttpClientEngineFactory<*>,
+        recorder: Recorder?,
+        keyIncludedHeaders: Boolean = false,
+        config: HttpClientConfig<*>.() -> Unit = {}
+    ) = invoke(engine.create(), recorder, keyIncludedHeaders, config)
 
-            val resp = if (recorder.isRecording) {
-                handleRequestRecord(client, recorder, request)
-            } else {
-                handlePlayback(recorder, request)
-            }
+    operator fun invoke(
+        engine: HttpClientEngine,
+        recorder: Recorder?,
+        keyIncludedHeaders: Boolean = false,
+        config: HttpClientConfig<*>.() -> Unit = {}
+    ): HttpClient {
 
-            resp
+        return if (recorder == null) {
+            // Create a standard Ktor client.
+            HttpClient(engine, config)
+
+        } else {
+            // Create a mock engine for recording and playback.
+            HttpClient(
+                MockEngine { request ->
+                    val client = HttpClient(engine, config)
+                    val resp = if (recorder.isRecording) {
+                        handleRequestRecord(client, recorder, request)
+                    } else {
+                        handlePlayback(recorder, request)
+                    }
+
+                    resp
+                },
+                config
+            )
         }
-
-    )
+    }
 
     /**
      * Executes the request over the network and records the details as a KtorClientEvent.
@@ -52,7 +69,7 @@ object KtorRecordableJsonClient {
         val resp = client.engine.execute(request)
         val body = resp.body
 
-        var bodyText = ""
+        var bodyText: String
         when (body) {
             is ByteChannel -> {
                 bodyText = body.readRemaining().readText()

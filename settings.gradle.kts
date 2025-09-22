@@ -1,2 +1,2 @@
 rootProject.name = "kaptest"
-include("kaptest-api", "kaptest-core", "kaptest-ktor", "kaptest-exposed")
+include("kaptest-api", "kaptest-core", "kaptest-ktor", "kaptest-exposed", "kke-example")

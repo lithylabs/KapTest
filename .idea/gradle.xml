@@ -13,6 +13,7 @@
             <option value="$PROJECT_DIR$/kaptest-core" />
             <option value="$PROJECT_DIR$/kaptest-exposed" />
             <option value="$PROJECT_DIR$/kaptest-ktor" />
+            <option value="$PROJECT_DIR$/kke-example" />
           </set>
         </option>
       </GradleProjectSettings>

@@ -1,25 +1,16 @@
 package org.lithylabs.kaptest.exposed
 
-import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.Deferred
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.async
-import kotlinx.coroutines.coroutineScope
-import kotlinx.coroutines.withContext
-import org.jetbrains.exposed.sql.CompositeSqlLogger
-import org.jetbrains.exposed.sql.Database
-import org.jetbrains.exposed.sql.SqlLogger
-import org.jetbrains.exposed.sql.Transaction
-import org.jetbrains.exposed.sql.transactions.TransactionInterface
-import org.jetbrains.exposed.sql.transactions.experimental.suspendedTransactionAsync
-import org.jetbrains.exposed.sql.transactions.transactionManager
-import org.lithylabs.kaptest.Recorder
+import kotlinx.coroutines.*
+import org.jetbrains.exposed.sql.*
+import org.jetbrains.exposed.sql.transactions.*
+import org.jetbrains.exposed.sql.transactions.experimental.*
+import org.lithylabs.kaptest.*
+import javax.sql.*
 import org.jetbrains.exposed.sql.transactions.transaction as exposedTransaction
-import javax.sql.DataSource
 
 open class RecordingDatabase(
     val dataSource: DataSource?,
-    val recorder: Recorder?,
+    val recorder: Recorder? = null,
 ) {
     val db: Database? = if (dataSource != null && recorder?.isRecording ?: false) {
         Database.connect(dataSource)

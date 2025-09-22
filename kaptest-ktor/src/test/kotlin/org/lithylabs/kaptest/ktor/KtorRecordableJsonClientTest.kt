@@ -1,24 +1,24 @@
 package org.lithylabs.kaptest.ktor
 
-import io.kotest.common.runBlocking
-import io.ktor.client.*
+import io.kotest.common.*
 import io.ktor.client.engine.cio.*
 import io.ktor.client.request.*
-import org.junit.jupiter.api.Test
-import org.lithylabs.kaptest.Recorder
+import io.ktor.client.statement.*
+import org.junit.jupiter.api.*
+import org.lithylabs.kaptest.*
 
 
 class KtorRecordableJsonClientTest {
 
     @Test
     fun `recordable client test`() = runBlocking {
-        val client = HttpClient(CIO)
         val recorder = MockTestRecorder()
-        val recordableClient = KtorRecordableJsonClient(client, recorder)
+        val recordableClient = RecordableHttpClient(CIO, recorder)
 
         recorder.readyTest(true)
         val resp = recordableClient.get("https://jsonplaceholder.typicode.com/todos/1")
-        println(resp)
+        val json = resp.bodyAsText()
+        println(json)
     }
 }
 

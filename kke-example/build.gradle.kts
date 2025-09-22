@@ -1,7 +1,3 @@
-import org.jetbrains.kotlin.gradle.plugin.KotlinSourceSetTree.Companion.test
-import java.time.*
-import java.time.format.*
-
 group = "org.reladev"
 version = "0.1.0"
 val artifact = "test.recorder.core"
@@ -20,6 +16,8 @@ repositories {
 dependencies {
     implementation(project(":kaptest-api"))
     implementation(project(":kaptest-core"))
+    implementation(project(":kaptest-exposed"))
+    implementation(project(":kaptest-ktor"))
 
     // Bundles
     implementation(libs.bundles.ktor)
